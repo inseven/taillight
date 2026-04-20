@@ -119,7 +119,7 @@ trap cleanup EXIT
 
 # Determine the version and build number.
 VERSION_NUMBER=`changes version`
-BUILD_NUMBER=`build-number.swift`
+BUILD_NUMBER=`build-tools generate-build-number`
 
 # Import the certificates into our dedicated keychain.
 echo "$DEVELOPER_ID_APPLICATION_CERTIFICATE_PASSWORD" | build-tools import-base64-certificate --password "$KEYCHAIN_PATH" "$DEVELOPER_ID_APPLICATION_CERTIFICATE_BASE64"
