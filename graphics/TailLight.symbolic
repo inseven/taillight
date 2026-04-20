@@ -1,0 +1,34 @@
+{
+  "iconOffset" : [
+    0,
+    0
+  ],
+  "symbolColor" : {
+    "alpha" : 1,
+    "green" : 0.9999999403953552,
+    "red" : 0.9999999403953552,
+    "blue" : 0.9999999403953552
+  },
+  "id" : "24670896-9CE6-40DD-86CB-111B3E0DEB8D",
+  "symbol" : {
+    "variant" : "outlined",
+    "family" : "material-icons",
+    "name" : "mouse"
+  },
+  "shadowHeight" : 0.24350198412698412,
+  "shadowOpacity" : 0.4,
+  "version" : 1,
+  "topColor" : {
+    "alpha" : 1,
+    "green" : 0.1280144453,
+    "red" : 0.5791940689,
+    "blue" : 0.5839576198630136
+  },
+  "bottomColor" : {
+    "alpha" : 1,
+    "green" : 0.1491314173,
+    "red" : 1,
+    "blue" : 0
+  },
+  "iconScale" : 0.9510905606437834
+}
