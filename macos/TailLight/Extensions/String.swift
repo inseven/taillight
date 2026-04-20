@@ -18,51 +18,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import SwiftUI
+import Foundation
 
-import Diligence
-import Glitter
-import Sparkle
+extension String {
 
-struct MainMenu: View {
-
-    @Environment(ApplicationModel.self) var applicationModel
-    
-    @Environment(\.openURL) var openURL
-
-    @State var selection: LightColor = .red
-
-    var body: some View {
-
-        Button("Request Permission...") {
-            applicationModel.requestPermission()
-        }
-
-        Divider()
-
-        Picker("Color", selection: $selection) {
-            ForEach(LightColor.allCases) { lightColor in
-                Text(lightColor.name)
-            }
-        }
-
-        Divider()
-
-        Button("About...", systemImage: "info.circle") {
-            openURL(.about)
-        }
-
-        Divider()
-
-        UpdateLink(updater: applicationModel.updaterController.updater)
-
-        Divider()
-
-        Button {
-            applicationModel.quit()
-        } label: {
-            Text("Quit")
-        }
+    init(contentsOfResource resource: String) {
+        let url = Bundle.main.url(forResource: resource, withExtension: nil)!
+        try! self.init(contentsOf: url, encoding: .utf8)
     }
 
 }

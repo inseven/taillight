@@ -18,51 +18,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import SwiftUI
+import Foundation
 
-import Diligence
+import Interact
 import Glitter
-import Sparkle
+import Licensable
 
-struct MainMenu: View {
+fileprivate let tailLightLicense = License(id: "https://github.com/inseven/taillight",
+                                          name: "TailLight",
+                                          author: "Jason Morley",
+                                          text: String(contentsOfResource: "taillight-license"),
+                                          attributes: [
+                                            .url(URL(string: "https://github.com/inseven/taillight")!, title: "GitHub"),
+                                          ],
+                                          licenses: [
+                                            .interact,
+                                            .glitter,
+                                            .licensable,
+                                          ])
 
-    @Environment(ApplicationModel.self) var applicationModel
-    
-    @Environment(\.openURL) var openURL
+extension Licensable where Self == License {
 
-    @State var selection: LightColor = .red
-
-    var body: some View {
-
-        Button("Request Permission...") {
-            applicationModel.requestPermission()
-        }
-
-        Divider()
-
-        Picker("Color", selection: $selection) {
-            ForEach(LightColor.allCases) { lightColor in
-                Text(lightColor.name)
-            }
-        }
-
-        Divider()
-
-        Button("About...", systemImage: "info.circle") {
-            openURL(.about)
-        }
-
-        Divider()
-
-        UpdateLink(updater: applicationModel.updaterController.updater)
-
-        Divider()
-
-        Button {
-            applicationModel.quit()
-        } label: {
-            Text("Quit")
-        }
-    }
+    public static var tailLight: License { tailLightLicense }
 
 }
