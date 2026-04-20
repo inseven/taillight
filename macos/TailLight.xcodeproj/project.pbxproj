@@ -6,13 +6,32 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		D833592C2F96C2D700FAFD27 /* Diligence in Frameworks */ = {isa = PBXBuildFile; productRef = D833592B2F96C2D700FAFD27 /* Diligence */; };
+		D833592F2F96C38C00FAFD27 /* Glitter in Frameworks */ = {isa = PBXBuildFile; productRef = D833592E2F96C38C00FAFD27 /* Glitter */; };
+		D83359342F96C63C00FAFD27 /* Glitter in Frameworks */ = {isa = PBXBuildFile; productRef = D83359332F96C63C00FAFD27 /* Glitter */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		D87B2FFA2F9475BA00862D81 /* TailLight.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TailLight.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		D83359312F96C4C900FAFD27 /* Exceptions for "TailLight" folder in "TailLight" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = D87B2FF92F9475BA00862D81 /* TailLight */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		D87B2FFC2F9475BA00862D81 /* TailLight */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				D83359312F96C4C900FAFD27 /* Exceptions for "TailLight" folder in "TailLight" target */,
+			);
 			path = TailLight;
 			sourceTree = "<group>";
 		};
@@ -23,6 +42,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D83359342F96C63C00FAFD27 /* Glitter in Frameworks */,
+				D833592F2F96C38C00FAFD27 /* Glitter in Frameworks */,
+				D833592C2F96C2D700FAFD27 /* Diligence in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +87,9 @@
 			);
 			name = TailLight;
 			packageProductDependencies = (
+				D833592B2F96C2D700FAFD27 /* Diligence */,
+				D833592E2F96C38C00FAFD27 /* Glitter */,
+				D83359332F96C63C00FAFD27 /* Glitter */,
 			);
 			productName = IntelliColor;
 			productReference = D87B2FFA2F9475BA00862D81 /* TailLight.app */;
@@ -94,6 +119,10 @@
 			);
 			mainGroup = D87B2FF12F9475BA00862D81;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				D833592A2F96C2D700FAFD27 /* XCRemoteSwiftPackageReference "diligence" */,
+				D83359322F96C63C00FAFD27 /* XCRemoteSwiftPackageReference "glitter" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D87B2FFB2F9475BA00862D81 /* Products */;
 			projectDirPath = "";
@@ -269,6 +298,7 @@
 				ENABLE_RESOURCE_ACCESS_USB = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TailLight/Info.plist;
 				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -302,7 +332,7 @@
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
-				ENABLE_OUTGOING_NETWORK_CONNECTIONS = NO;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
 				ENABLE_RESOURCE_ACCESS_BLUETOOTH = NO;
@@ -314,6 +344,7 @@
 				ENABLE_RESOURCE_ACCESS_USB = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TailLight/Info.plist;
 				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -357,6 +388,42 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D833592A2F96C2D700FAFD27 /* XCRemoteSwiftPackageReference "diligence" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/inseven/diligence.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.12.0;
+			};
+		};
+		D83359322F96C63C00FAFD27 /* XCRemoteSwiftPackageReference "glitter" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/inseven/glitter.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D833592B2F96C2D700FAFD27 /* Diligence */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D833592A2F96C2D700FAFD27 /* XCRemoteSwiftPackageReference "diligence" */;
+			productName = Diligence;
+		};
+		D833592E2F96C38C00FAFD27 /* Glitter */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Glitter;
+		};
+		D83359332F96C63C00FAFD27 /* Glitter */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D83359322F96C63C00FAFD27 /* XCRemoteSwiftPackageReference "glitter" */;
+			productName = Glitter;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D87B2FF22F9475BA00862D81 /* Project object */;
 }
