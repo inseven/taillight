@@ -20,6 +20,9 @@
 
 import SwiftUI
 
+import Glitter
+import Sparkle
+
 struct MainMenu: View {
 
     @Environment(ApplicationModel.self) var applicationModel
@@ -39,6 +42,10 @@ struct MainMenu: View {
                 Text(lightColor.name)
             }
         }
+
+        Divider()
+
+        UpdateLink(updater: applicationModel.updaterController.updater)
 
         Divider()
 

@@ -22,8 +22,14 @@ import SwiftUI
 import CoreHID
 import IOKit
 
+import Sparkle
+
 @Observable
 class ApplicationModel {
+
+    let updaterController = SPUStandardUpdaterController(startingUpdater: false,
+                                                         updaterDelegate: nil,
+                                                         userDriverDelegate: nil)
 
     let manager = HIDDeviceManager();
 
@@ -37,6 +43,11 @@ class ApplicationModel {
     }
 
     func start() {
+
+#if !DEBUG
+        updaterController.startUpdater()
+#endif
+
         Task {
             await scan()
         }
