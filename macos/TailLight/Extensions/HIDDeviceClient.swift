@@ -22,7 +22,7 @@ import CoreHID
 
 extension HIDDeviceClient {
 
-    // Look through the elements and pull out the collection update update elements corresponding with the first lamp
+    // Look through the elements and pull out the collection of update elements corresponding with the first lamp
     // range report. The lamp range report is identified by the presnece of a lamp id start element.
     var lampRangeReport: LampRangeReport? {
         guard let autonomousMode = elements.first(where: { $0.usage == .lightingAndIllumination(.autonomousMode) }),
