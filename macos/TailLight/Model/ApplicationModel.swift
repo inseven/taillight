@@ -64,7 +64,7 @@ class ApplicationModel {
                     try results[autonomousModeUpdate]?.get()
                     try results[colorUpdate]?.get()
 
-                case .deviceRemoved(let deviceReference):
+                case .deviceRemoved(_):
                     continue
 
                 default:
