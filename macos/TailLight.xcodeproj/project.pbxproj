@@ -10,6 +10,7 @@
 		D833592C2F96C2D700FAFD27 /* Diligence in Frameworks */ = {isa = PBXBuildFile; productRef = D833592B2F96C2D700FAFD27 /* Diligence */; };
 		D833592F2F96C38C00FAFD27 /* Glitter in Frameworks */ = {isa = PBXBuildFile; productRef = D833592E2F96C38C00FAFD27 /* Glitter */; };
 		D83359342F96C63C00FAFD27 /* Glitter in Frameworks */ = {isa = PBXBuildFile; productRef = D83359332F96C63C00FAFD27 /* Glitter */; };
+		D833598B2F96CA4300FAFD27 /* Interact in Frameworks */ = {isa = PBXBuildFile; productRef = D833598A2F96CA4300FAFD27 /* Interact */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 			files = (
 				D83359342F96C63C00FAFD27 /* Glitter in Frameworks */,
 				D833592F2F96C38C00FAFD27 /* Glitter in Frameworks */,
+				D833598B2F96CA4300FAFD27 /* Interact in Frameworks */,
 				D833592C2F96C2D700FAFD27 /* Diligence in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -90,6 +92,7 @@
 				D833592B2F96C2D700FAFD27 /* Diligence */,
 				D833592E2F96C38C00FAFD27 /* Glitter */,
 				D83359332F96C63C00FAFD27 /* Glitter */,
+				D833598A2F96CA4300FAFD27 /* Interact */,
 			);
 			productName = IntelliColor;
 			productReference = D87B2FFA2F9475BA00862D81 /* TailLight.app */;
@@ -122,6 +125,7 @@
 			packageReferences = (
 				D833592A2F96C2D700FAFD27 /* XCRemoteSwiftPackageReference "diligence" */,
 				D83359322F96C63C00FAFD27 /* XCRemoteSwiftPackageReference "glitter" */,
+				D83359892F96CA4300FAFD27 /* XCRemoteSwiftPackageReference "interact" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D87B2FFB2F9475BA00862D81 /* Products */;
@@ -395,7 +399,7 @@
 			repositoryURL = "https://github.com/inseven/diligence.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.12.0;
+				minimumVersion = 1.12.1;
 			};
 		};
 		D83359322F96C63C00FAFD27 /* XCRemoteSwiftPackageReference "glitter" */ = {
@@ -404,6 +408,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 0.1.3;
+			};
+		};
+		D83359892F96CA4300FAFD27 /* XCRemoteSwiftPackageReference "interact" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/inseven/interact.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.10.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -422,6 +434,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D83359322F96C63C00FAFD27 /* XCRemoteSwiftPackageReference "glitter" */;
 			productName = Glitter;
+		};
+		D833598A2F96CA4300FAFD27 /* Interact */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D83359892F96CA4300FAFD27 /* XCRemoteSwiftPackageReference "interact" */;
+			productName = Interact;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

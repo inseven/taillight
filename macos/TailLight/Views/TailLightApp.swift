@@ -20,18 +20,40 @@
 
 import SwiftUI
 
+import Diligence
+import Interact
+
 @main
 struct TailLightApp: App {
+
+    static let supportTitle = "TailLight Support (\(Bundle.main.extendedVersion ?? "Unknown Version"))"
 
     @State var applicationModel = ApplicationModel()
 
     var body: some Scene {
+
         MenuBarExtra {
             MainMenu()
                 .environment(applicationModel)
         } label: {
             Label("TailLight", systemImage: "computermouse")
         }
+
+        About(repository: "inseven/taillight", copyright: "Copyright © 2026 Jason Morley") {
+            Action("GitHub", url: URL(string: "https://github.com/inseven/taillight")!)
+            Action("Support", url: URL(address: "support@jbmorley.co.uk", subject: Self.supportTitle)!)
+        } acknowledgements: {
+            Acknowledgements("Developers") {
+                Credit("Jason Morley", url: URL(string: "https://jbmorley.co.uk"))
+            }
+            Acknowledgements("Thanks") {
+                Credit("Sarah Barbour")
+            }
+        } licenses: {
+            (.tailLight)
+        }
+        .handlesExternalEvents(matching: [.about])
+
     }
 
 }
