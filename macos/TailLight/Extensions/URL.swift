@@ -21,5 +21,8 @@
 import Foundation
 
 extension URL {
+
     static let about = URL(string: "x-taillight://about")!
+    static let donate = URL(string: "https://jbmorley.co.uk/donate")!
+    
 }
