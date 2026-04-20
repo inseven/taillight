@@ -1,6 +1,6 @@
 # TailLight
 
-Utility for setting the light on the Microsoft Pro IntelliMouse.
+macOS utility for setting the light on the Microsoft Pro IntelliMouse.
 
 ## License
 
