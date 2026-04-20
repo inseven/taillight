@@ -4,3 +4,6 @@
 [submodule "scripts/changes"]
 	path = scripts/changes
 	url = https://github.com/jbmorley/changes.git
+[submodule "scripts/Sparkle"]
+	path = scripts/Sparkle
+	url = https://github.com/sparkle-project/Sparkle
