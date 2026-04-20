@@ -146,59 +146,21 @@ xcodebuild \
     -exportPath "$BUILD_DIRECTORY" \
     -exportOptionsPlist "ExportOptions.plist"
 
-# Apple recommends we use ditto to prepare zips for notarization.
-# https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/customizing_the_notarization_workflow
-RELEASE_BASENAME="TailLight-$VERSION_NUMBER-$BUILD_NUMBER"
-RELEASE_ZIP_BASENAME="$RELEASE_BASENAME.zip"
-RELEASE_ZIP_PATH="$BUILD_DIRECTORY/$RELEASE_ZIP_BASENAME"
-pushd "$BUILD_DIRECTORY"
-/usr/bin/ditto -c -k --keepParent "TailLight.app" "$RELEASE_ZIP_BASENAME"
-popd
-
 # Install the private key.
 mkdir -p ~/.appstoreconnect/private_keys/
 API_KEY_PATH=~/".appstoreconnect/private_keys/AuthKey_${APPLE_API_KEY_ID}.p8"
 echo -n "$APPLE_API_KEY_BASE64" | base64 --decode -o "$API_KEY_PATH"
 
-# Validate the app before going any further.
-codesign --verify --deep --strict --verbose=2 "$BUILD_DIRECTORY/TailLight.app"
-
-# Notarize the app.
-xcrun notarytool submit "$RELEASE_ZIP_PATH" \
+# Notarize and staple the app.
+build-tools notarize "$BUILD_DIRECTORY/TailLight.app" \
     --key "$API_KEY_PATH" \
     --key-id "$APPLE_API_KEY_ID" \
-    --issuer "$APPLE_API_KEY_ISSUER_ID" \
-    --output-format json \
-    --wait | tee command-notarization-response.json
-NOTARIZATION_ID=`cat command-notarization-response.json | jq -r ".id"`
-NOTARIZATION_RESPONSE=`cat command-notarization-response.json | jq -r ".status"`
+    --issuer "$APPLE_API_KEY_ISSUER_ID"
 
-xcrun notarytool log \
-    --key "$API_KEY_PATH" \
-    --key-id "$APPLE_API_KEY_ID" \
-    --issuer "$APPLE_API_KEY_ISSUER_ID" \
-    "$NOTARIZATION_ID" | tee "$BUILD_DIRECTORY/notarization-log.json"
-
-if [ "$NOTARIZATION_RESPONSE" != "Accepted" ] ; then
-    echo "Failed to notarize app."
-    exit 1
-fi
-
-# Remove the zip file used for notarization.
-rm "$RELEASE_ZIP_PATH"
-
-# Staple and validate the app; this bakes the notarization into the app in case the device trying to run it can't do an
-# online check with Apple's servers for some reason.
-xcrun stapler staple "$BUILD_DIRECTORY/TailLight.app"
-xcrun stapler validate "$BUILD_DIRECTORY/TailLight.app"
-
-# Next up, we perform a belt-and-braces check that the app validates after stapling.
-codesign --verify --deep --strict --verbose=2 "$BUILD_DIRECTORY/TailLight.app"
-
-# Compress the stapled app and package it for release.
-# Curiously, ditto, which Apple recommends for compressing app bundles only seems to create valid zip files when using
-# Sequoia and subsequently notarizing the zip file. Since we need to recompress the stapled app package, we instead use
-# `zip --symlinks` which, thankfully, seems to work just fine.
+# Compress the app.
+RELEASE_BASENAME="TailLight-$VERSION_NUMBER-$BUILD_NUMBER"
+RELEASE_ZIP_BASENAME="$RELEASE_BASENAME.zip"
+RELEASE_ZIP_PATH="$BUILD_DIRECTORY/$RELEASE_ZIP_BASENAME"
 pushd "$BUILD_DIRECTORY"
 zip --symlinks -r "$RELEASE_ZIP_BASENAME" "TailLight.app"
 rm -r "TailLight.app"
