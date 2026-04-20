@@ -54,6 +54,33 @@ struct MainMenu: View {
 
         Divider()
 
+        Menu("Help") {
+
+            Button("GitHub", systemImage: "globe") {
+                openURL(URL(string: "https://github.com/inseven/taillight")!)
+            }
+
+            Button("Support", systemImage: "mail") {
+                let subject = "TailLight Support (\(Bundle.main.extendedVersion ?? "Unknown Version"))"
+                openURL(URL(address: "support@jbmorley.co.uk", subject: subject)!)
+            }
+
+            Divider()
+
+            Button("Donate", systemImage: "globe") {
+                openURL(.donate)
+            }
+
+            Button {
+                openURL(URL(string: "https://jbmorley.co.uk/software")!)
+            } label: {
+                Label("More Software by Jason Morley", systemImage: "globe")
+            }
+
+        }
+
+        Divider()
+
         UpdateLink(updater: applicationModel.updaterController.updater)
 
         Divider()
