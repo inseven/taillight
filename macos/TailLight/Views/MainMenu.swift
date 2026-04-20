@@ -85,11 +85,11 @@ struct MainMenu: View {
 
         Divider()
 
-        Button {
-            applicationModel.quit()
-        } label: {
-            Text("Quit")
+        Button("Quit", systemImage: "xmark.rectangle") {
+            NSApplication.shared.terminate(nil)
         }
+        .keyboardShortcut("q")
+
     }
 
 }
