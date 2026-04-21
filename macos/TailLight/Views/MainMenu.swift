@@ -52,6 +52,10 @@ struct MainMenu: View {
             openURL(.about)
         }
 
+        Menu("Settings", systemImage: "gear") {
+            SettingsMenu()
+        }
+
         Divider()
 
         Menu("Help") {
