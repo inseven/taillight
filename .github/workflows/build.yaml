@@ -49,16 +49,16 @@ jobs:
         path: build/build-*.zip
         if-no-files-found: error
 
-    sparkle-update:
-      needs: macos-build
-      if: ${{ github.ref == 'refs/heads/main' }}
+  sparkle-update:
+    needs: macos-build
+    if: ${{ github.ref == 'refs/heads/main' }}
 
-      runs-on: ubuntu-latest
-      steps:
+    runs-on: ubuntu-latest
+    steps:
 
-      - name: Update Sparkle archives
-        uses: peter-evans/repository-dispatch@v4
-        with:
-          token: ${{ secrets._GITHUB_ACCESS_TOKEN }}
-          repository: inseven/sparkle-archives
-          event-type: build
+    - name: Update Sparkle archives
+      uses: peter-evans/repository-dispatch@v4
+      with:
+        token: ${{ secrets._GITHUB_ACCESS_TOKEN }}
+        repository: inseven/sparkle-archives
+        event-type: build
