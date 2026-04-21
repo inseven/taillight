@@ -60,7 +60,7 @@ struct MainMenu: View {
                 openURL(URL(string: "https://github.com/inseven/taillight")!)
             }
 
-            Button("Support", systemImage: "mail") {
+            Button("Support", systemImage: "envelope") {
                 let subject = "TailLight Support (\(Bundle.main.extendedVersion ?? "Unknown Version"))"
                 openURL(URL(address: "support@jbmorley.co.uk", subject: subject)!)
             }
