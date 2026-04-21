@@ -36,7 +36,7 @@ struct TailLightApp: App {
             MainMenu()
                 .environment(applicationModel)
         } label: {
-            Label("TailLight", systemImage: "computermouse")
+            Label("TailLight", image: "taillight")
         }
 
         About(repository: "inseven/taillight", copyright: "Copyright © 2026 Jason Morley") {
