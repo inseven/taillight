@@ -20,7 +20,7 @@
 
 import Foundation
 
-struct LightColor {
+struct LampColor {
 
     var red: UInt8
     var green: UInt8

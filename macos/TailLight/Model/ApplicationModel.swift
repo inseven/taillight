@@ -40,20 +40,26 @@ class ApplicationModel {
 
     public var state: State = .unknown
 
-    private let keyedDefaults = KeyedDefaults<SettingsKey>()
-
     let updaterController = SPUStandardUpdaterController(startingUpdater: false,
                                                          updaterDelegate: nil,
                                                          userDriverDelegate: nil)
-
-    let manager = HIDDeviceManager();
 
     @MainActor
     var color: NamedColor {
         didSet {
             keyedDefaults.set(color.rawValue, forKey: .color)
+            Task {
+                for client in clients {
+                    await client.setColor(color.lampColor)
+                }
+            }
         }
     }
+
+    private let manager = HIDDeviceManager();
+    private let keyedDefaults = KeyedDefaults<SettingsKey>()
+    private var clients: [HIDDeviceClient] = []
+
 
     init() {
         color = NamedColor(rawValue: keyedDefaults.string(forKey: .color, default: NamedColor.red.rawValue)) ?? .red
@@ -98,29 +104,22 @@ class ApplicationModel {
             for try await notification in await manager.monitorNotifications(matchingCriteria: [matchingCriteria]) {
                 switch notification {
                 case .deviceMatched(let deviceReference):
-
                     guard
                         let client = HIDDeviceClient(deviceReference: deviceReference),
-                        let lampRangeReport = await client.lampRangeReport
+                        await client.lampRangeReport != nil
                     else {
                         continue
                     }
-                    let autonomousModeUpdate = lampRangeReport.update(settingAutonomousMode: false)
-                    let color = color.lightColor
-                    let colorUpdate = lampRangeReport.update(settingRed: color.red, green: color.green, blue: color.blue, intensity: color.intensity)
-                    let results = await client.updateElements([autonomousModeUpdate, colorUpdate])
-                    try results[autonomousModeUpdate]?.get()
-                    try results[colorUpdate]?.get()
-
-                case .deviceRemoved(_):
-                    continue
-
+                    await client.setColor(color.lampColor)
+                    clients.append(client)
+                case .deviceRemoved(let deviceReference):
+                    clients.removeAll { $0.deviceReference == deviceReference }
                 default:
                     continue
                 }
             }
         } catch {
-            print("Failed with error \(error).");
+            print("Failed to scan for devices with error \(error).");
         }
     }
 
