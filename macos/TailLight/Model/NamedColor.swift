@@ -18,13 +18,41 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import Foundation
+import SwiftUI
 
-struct LightColor {
+enum NamedColor: String, CaseIterable, Identifiable, Codable {
 
-    var red: UInt8
-    var green: UInt8
-    var blue: UInt8
-    var intensity: UInt8
+    var id: Self {
+        return self
+    }
+
+    case red
+    case green
+    case blue
+}
+
+extension NamedColor {
+
+    var name: String {
+        switch self {
+        case .red:
+            return "Red"
+        case .green:
+            return "Green"
+        case .blue:
+            return "Blue"
+        }
+    }
+
+    var lightColor: LightColor {
+        switch self {
+        case .red:
+            return LightColor(red: 255, green: 0, blue: 0, intensity: 255)
+        case .green:
+            return LightColor(red: 0, green: 255, blue: 0, intensity: 255)
+        case .blue:
+            return LightColor(red: 0, green: 0, blue: 255, intensity: 255)
+        }
+    }
 
 }

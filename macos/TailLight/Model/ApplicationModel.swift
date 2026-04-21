@@ -22,10 +22,25 @@ import SwiftUI
 import CoreHID
 import IOKit
 
+import Interact
 import Sparkle
 
 @Observable
 class ApplicationModel {
+
+    enum SettingsKey: String {
+        case color
+    }
+
+    enum State {
+        case unknown
+        case authorized
+        case denied
+    }
+
+    public var state: State = .unknown
+
+    private let keyedDefaults = KeyedDefaults<SettingsKey>()
 
     let updaterController = SPUStandardUpdaterController(startingUpdater: false,
                                                          updaterDelegate: nil,
@@ -33,7 +48,15 @@ class ApplicationModel {
 
     let manager = HIDDeviceManager();
 
+    @MainActor
+    var color: NamedColor {
+        didSet {
+            keyedDefaults.set(color.rawValue, forKey: .color)
+        }
+    }
+
     init() {
+        color = NamedColor(rawValue: keyedDefaults.string(forKey: .color, default: NamedColor.red.rawValue)) ?? .red
         start()
     }
 
@@ -43,6 +66,19 @@ class ApplicationModel {
     }
 
     func start() {
+
+        // Check to see if we're authorized.
+        let access = IOHIDCheckAccess(kIOHIDRequestTypeListenEvent)
+        switch access {
+        case kIOHIDAccessTypeDenied:
+            state = .denied
+        case kIOHIDAccessTypeGranted:
+            state = .authorized
+        case kIOHIDAccessTypeUnknown:
+            state = .unknown
+        default:
+            state = .unknown
+        }
 
 #if !DEBUG
         updaterController.startUpdater()
@@ -70,7 +106,8 @@ class ApplicationModel {
                         continue
                     }
                     let autonomousModeUpdate = lampRangeReport.update(settingAutonomousMode: false)
-                    let colorUpdate = lampRangeReport.update(settingRed: 255, green: 0, blue: 0, intensity: 255)
+                    let color = color.lightColor
+                    let colorUpdate = lampRangeReport.update(settingRed: color.red, green: color.green, blue: color.blue, intensity: color.intensity)
                     let results = await client.updateElements([autonomousModeUpdate, colorUpdate])
                     try results[autonomousModeUpdate]?.get()
                     try results[colorUpdate]?.get()
