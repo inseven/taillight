@@ -37,7 +37,7 @@ struct LampRangeReport {
         ])
     }
 
-    func update(settingRed red: Int, green: Int, blue: Int, intensity: Int) -> HIDDeviceClient.ProvideElementUpdate {
+    func update(settingRed red: UInt8, green: UInt8, blue: UInt8, intensity: UInt8) -> HIDDeviceClient.ProvideElementUpdate {
         return HIDDeviceClient.ProvideElementUpdate(values: [
 
             // Specify the set of lamps we're acting on.
@@ -45,10 +45,10 @@ struct LampRangeReport {
             lampIdEnd.setter(newValue: 0),
 
             // Set the color and brightness.
-            redUpdateChannel.setter(newValue: red),
-            greenUpdateChannel.setter(newValue: green),
-            blueUpdateChannel.setter(newValue: blue),
-            intensityUpdateChannel.setter(newValue: intensity),
+            redUpdateChannel.setter(newValue: Int(red)),
+            greenUpdateChannel.setter(newValue: Int(green)),
+            blueUpdateChannel.setter(newValue: Int(blue)),
+            intensityUpdateChannel.setter(newValue: Int(intensity)),
 
             // Commit the update.
             lampUpdateFlags.setter(newValue: 1),

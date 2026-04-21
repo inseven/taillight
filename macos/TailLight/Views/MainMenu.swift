@@ -30,20 +30,33 @@ struct MainMenu: View {
     
     @Environment(\.openURL) var openURL
 
-    @State var selection: LightColor = .red
-
     var body: some View {
-
-        Button("Request Permission...") {
-            applicationModel.requestPermission()
-        }
 
         Divider()
 
-        Picker("Color", selection: $selection) {
-            ForEach(LightColor.allCases) { lightColor in
-                Text(lightColor.name)
+        switch applicationModel.state {
+        case .unknown:
+
+            Button("Allow 'Input Monitoring'...", systemImage: "hand.raised") {
+                applicationModel.requestPermission()
             }
+
+        case .authorized:
+
+            @Bindable var applicationModel = applicationModel
+            Picker("Color", systemImage: "swatchpalette", selection: $applicationModel.color) {
+                ForEach(NamedColor.allCases) { lightColor in
+                    Text(lightColor.name)
+                }
+            }
+
+        case .denied:
+
+            Button("Allow 'Input Monitoring'...", systemImage: "hand.raised") {
+                let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_ListenEvent")!
+                openURL(url)
+            }
+
         }
 
         Divider()
