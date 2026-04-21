@@ -56,9 +56,7 @@ struct MainMenu: View {
             SettingsMenu()
         }
 
-        Divider()
-
-        Menu("Help") {
+        Menu("Help", systemImage: "questionmark.circle") {
 
             Button("GitHub", systemImage: "globe") {
                 openURL(URL(string: "https://github.com/inseven/taillight")!)
