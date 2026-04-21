@@ -44,7 +44,7 @@ struct TailLightApp: App {
             Action("Support", url: URL(address: "support@jbmorley.co.uk", subject: Self.supportTitle)!)
         } acknowledgements: {
             Acknowledgements("Developers") {
-                Credit("Jason Morley", url: URL(string: "https://jbmorley.co.uk"))
+                Credit("Jason Morley", url: URL(string: "https://jbmorley.co.uk/about"))
             }
             Acknowledgements("Thanks") {
                 Credit("Sarah Barbour")
