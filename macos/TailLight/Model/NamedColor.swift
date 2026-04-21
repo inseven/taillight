@@ -27,8 +27,11 @@ enum NamedColor: String, CaseIterable, Identifiable, Codable {
     }
 
     case red
+    case orange
+    case yellow
     case green
     case blue
+    case purple
 }
 
 extension NamedColor {
@@ -37,21 +40,33 @@ extension NamedColor {
         switch self {
         case .red:
             return "Red"
+        case .orange:
+            return "Orange"
+        case .yellow:
+            return "Yellow"
         case .green:
             return "Green"
         case .blue:
             return "Blue"
+        case .purple:
+            return "Purple"
         }
     }
 
-    var lightColor: LightColor {
+    var lampColor: LampColor {
         switch self {
         case .red:
-            return LightColor(red: 255, green: 0, blue: 0, intensity: 255)
+            return LampColor(red: 255, green: 0, blue: 0, intensity: 255)
+        case .orange:
+            return LampColor(red: 255, green: 100, blue: 0, intensity: 255)
+        case .yellow:
+            return LampColor(red: 255, green: 255, blue: 0, intensity: 255)
         case .green:
-            return LightColor(red: 0, green: 255, blue: 0, intensity: 255)
+            return LampColor(red: 0, green: 255, blue: 0, intensity: 255)
         case .blue:
-            return LightColor(red: 0, green: 0, blue: 255, intensity: 255)
+            return LampColor(red: 0, green: 0, blue: 255, intensity: 255)
+        case .purple:
+            return LampColor(red: 255, green: 0, blue: 255, intensity: 255)
         }
     }
 
