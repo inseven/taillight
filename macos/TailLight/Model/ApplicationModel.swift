@@ -119,13 +119,14 @@ class ApplicationModel {
                     // workaround for what looks like a bug in the Swift HID wrappers that results in some kind of
                     // deadlock-related executor pool exhaustion that, after some iterations (connect/disconnect the
                     // mouse a number of times), would cause a hang in a `HIDDeviceClient.dinit`. Since all documentation
-                    // I can find points `deinit` being nonisolated in Swift 5 and 6, a hang in `HIDDeviceClient.deinit`
-                    // must be a result of some kind of leaked concurrency from that implementation---either a dispatch
-                    // to `DispatchQueue.main` or, perhaps some nuanced shared synchronization mechanism between
-                    // `HIDDeviceManager` and `HIDDeviceClient`. I note that if the bug was a simple deadlock resulting
-                    // from a blocking `DispatchQueue.main` dispatch in `HIDDeviceClient.deinit`, then I'd expect to see
-                    // the code lock up on the first disconnection, whereas we're seeing it do so after a period of
-                    // time leaving me at somewhat of a loss as to the true mechanism.
+                    // I can find points to `deinit` being nonisolated in Swift 5 and 6, a hang in
+                    // `HIDDeviceClient.deinit` must be a result of some kind of leaked concurrency from that
+                    // implementation---either a dispatch to `DispatchQueue.main` or, perhaps some nuanced shared
+                    // synchronization mechanism between `HIDDeviceManager` and `HIDDeviceClient`. I note that if the
+                    // bug was a simple deadlock resulting from a blocking `DispatchQueue.main` dispatch in
+                    // `HIDDeviceClient.deinit`, then I'd expect to see the code lock up on the first disconnection,
+                    // whereas we're seeing it do so after a period of time leaving me at somewhat of a loss as to the
+                    // true mechanism.
                     let removedClients = clients.filter { $0.deviceReference == deviceReference }
                     clients.removeAll { $0.deviceReference == deviceReference }
                     Task.detached { _ = removedClients }
