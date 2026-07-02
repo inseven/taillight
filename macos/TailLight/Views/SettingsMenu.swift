@@ -20,7 +20,7 @@
 
 import SwiftUI
 
-import Interact
+@preconcurrency import Interact
 
 struct SettingsMenu: View {
 
