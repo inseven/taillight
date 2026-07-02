@@ -50,15 +50,9 @@ extension HIDDeviceClient {
         guard let lampRangeReport = lampRangeReport else {
             return
         }
-        do {
-            let autonomousModeUpdate = await lampRangeReport.update(settingAutonomousMode: false)
-            let colorUpdate = await lampRangeReport.update(settingRed: color.red, green: color.green, blue: color.blue, intensity: color.intensity)
-            let results = await updateElements([autonomousModeUpdate, colorUpdate])
-            try results[autonomousModeUpdate]?.get()
-            try results[colorUpdate]?.get()
-        } catch {
-            print("Failed to update color with error \(error).")
-        }
+        let autonomousModeUpdate = await lampRangeReport.update(settingAutonomousMode: false)
+        let colorUpdate = await lampRangeReport.update(settingRed: color.red, green: color.green, blue: color.blue, intensity: color.intensity)
+        _ = await updateElements([autonomousModeUpdate, colorUpdate])
     }
 
 }
