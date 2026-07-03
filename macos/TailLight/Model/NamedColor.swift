@@ -32,6 +32,7 @@ enum NamedColor: String, CaseIterable, Identifiable, Codable {
     case green
     case blue
     case purple
+    case white
 }
 
 extension NamedColor {
@@ -50,6 +51,8 @@ extension NamedColor {
             return "Blue"
         case .purple:
             return "Purple"
+        case .white:
+            return "White"
         }
     }
 
@@ -67,6 +70,8 @@ extension NamedColor {
             return LampColor(red: 0, green: 0, blue: 255, intensity: 255)
         case .purple:
             return LampColor(red: 255, green: 0, blue: 255, intensity: 255)
+        case .white:
+            return LampColor(red: 255, green: 255, blue: 255, intensity: 255)
         }
     }
 
