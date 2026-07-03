@@ -39,6 +39,8 @@ struct TailLightApp: App {
             Label("TailLight", image: "taillight")
         }
 
+        ColorPickerWindow(applicationModel: applicationModel)
+
         About(repository: "inseven/taillight", copyright: "Copyright © 2026 Jason Morley") {
             Action("Website", url: URL(string: "https://taillight.jbmorley.co.uk")!)
             Action("Privacy Policy", url: URL(string: "https://taillight.jbmorley.co.uk/privacy-policy")!)

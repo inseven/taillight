@@ -75,4 +75,12 @@ extension NamedColor {
         }
     }
 
+    var hsbColor: HSBColor {
+        return HSBColor(lampColor)
+    }
+
+    var color: Color {
+        return hsbColor.color
+    }
+
 }

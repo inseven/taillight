@@ -45,9 +45,9 @@ class ApplicationModel {
                                                          updaterDelegate: nil,
                                                          userDriverDelegate: nil)
 
-    var color: NamedColor {
+    var color: HSBColor {
         didSet {
-            keyedDefaults.set(color.rawValue, forKey: .color)
+            try? keyedDefaults.set(codable: color, forKey: .color)
             let lampColor = color.lampColor
             for client in clients {
                 Task { await client.setColor(lampColor) }
@@ -61,7 +61,7 @@ class ApplicationModel {
 
 
     init() {
-        color = NamedColor(rawValue: keyedDefaults.string(forKey: .color, default: NamedColor.red.rawValue)) ?? .red
+        color = (try? keyedDefaults.codable(forKey: .color)) ?? NamedColor.red.hsbColor
         start()
     }
 

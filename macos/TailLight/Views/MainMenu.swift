@@ -27,8 +27,9 @@ import Sparkle
 struct MainMenu: View {
 
     @Environment(ApplicationModel.self) var applicationModel
-    
+
     @Environment(\.openURL) var openURL
+    @Environment(\.openWindow) var openWindow
 
     var body: some View {
 
@@ -44,9 +45,18 @@ struct MainMenu: View {
         case .authorized:
 
             @Bindable var applicationModel = applicationModel
-            Picker("Color", systemImage: "swatchpalette", selection: $applicationModel.color) {
-                ForEach(NamedColor.allCases) { lightColor in
-                    Text(lightColor.name)
+            Menu("Color", systemImage: "swatchpalette") {
+                Picker("Color", selection: $applicationModel.color) {
+                    ForEach(NamedColor.allCases) { namedColor in
+                        Text(namedColor.name)
+                            .tag(namedColor.hsbColor)
+                    }
+                }
+                .pickerStyle(.inline)
+                .labelsHidden()
+                Divider()
+                Button("Select...") {
+                    openWindow(id: ColorPickerWindow.id)
                 }
             }
 
