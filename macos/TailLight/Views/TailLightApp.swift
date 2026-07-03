@@ -40,6 +40,8 @@ struct TailLightApp: App {
         }
 
         About(repository: "inseven/taillight", copyright: "Copyright © 2026 Jason Morley") {
+            Action("Website", url: URL(string: "https://taillight.jbmorley.co.uk")!)
+            Action("Privacy Policy", url: URL(string: "https://taillight.jbmorley.co.uk/privacy-policy")!)
             Action("GitHub", url: URL(string: "https://github.com/inseven/taillight")!)
             Action("Support", url: URL(address: "support@jbmorley.co.uk", subject: Self.supportTitle)!)
         } acknowledgements: {

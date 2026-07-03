@@ -71,6 +71,14 @@ struct MainMenu: View {
 
         Menu("Help", systemImage: "questionmark.circle") {
 
+            Button("Website", systemImage: "globe") {
+                openURL(URL(string: "https://taillight.jbmorley.co.uk")!)
+            }
+
+            Button("Privacy Policy", systemImage: "globe") {
+                openURL(URL(string: "https://taillight.jbmorley.co.uk/privacy-policy")!)
+            }
+
             Button("GitHub", systemImage: "globe") {
                 openURL(URL(string: "https://github.com/inseven/taillight")!)
             }
