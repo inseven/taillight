@@ -1,6 +1,6 @@
 # TailLight
 
-macOS utility for setting the light on the Microsoft Pro IntelliMouse.
+Utility for managing the Microsoft Pro IntelliMouse taillight.
 
 [![build](https://github.com/inseven/taillight/actions/workflows/build.yaml/badge.svg)](https://github.com/inseven/taillight/actions/workflows/build.yaml)
 
