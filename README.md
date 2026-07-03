@@ -6,6 +6,10 @@ macOS utility for setting the light on the Microsoft Pro IntelliMouse.
 
 ![Photo of Pro IntelliMouse with red tail light](images/example.jpeg)
 
+## Development
+
+TailLight follows the version numbering, build and signing conventions for InSeven Limited apps. Further details can be found [here](https://github.com/inseven/build-documentation).
+
 ## License
 
 TailLight is licensed under the MIT License (see [LICENSE](LICENSE)). It depends on the following separately licensed third-party libraries and components:

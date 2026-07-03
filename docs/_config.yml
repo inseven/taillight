@@ -1,0 +1,40 @@
+theme: theme
+title: TailLight
+author: Jason Morley
+email: support@jbmorley.co.uk
+description: Set the light on your Microsoft Pro IntelliMouse
+baseurl: ""
+url: "https://taillight.jbmorley.co.uk"
+repository: https://github.com/inseven/taillight
+copyright: 2026 <a href="https://jbmorley.co.uk/about">Jason Morley</a>
+
+navigation:
+  - title: TailLight
+    href: /
+  - title: Releases
+    href: /releases
+  - title: GitHub
+    href: https://github.com/inseven/taillight
+  - title: Donate
+    href: https://jbmorley.co.uk/support/
+
+footer:
+  - title: Privacy Policy
+    href: /privacy-policy
+  - title: Support
+    href: /support
+  - title: License
+    href: /license
+  - title: More Software
+    href: https://jbmorley.co.uk/software/
+
+plugins:
+  - jekyll-feed
+  - jekyll-environment-variables
+  - jekyll-toc
+  - jekyll-image-size
+destination: ../_site
+
+defaults:
+  - values:
+      layout: "page"
