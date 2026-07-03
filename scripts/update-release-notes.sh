@@ -20,19 +20,21 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-ROOT_DIRECTORY="$( cd "$( dirname "$( dirname "${BASH_SOURCE[0]}" )" )" &> /dev/null && pwd )"
-SCRIPTS_DIRECTORY="$ROOT_DIRECTORY/scripts"
+set -e
+set -o pipefail
+set -x
+set -u
 
-export LOCAL_TOOLS_PATH="$ROOT_DIRECTORY/.local"
+SCRIPTS_DIRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
-export BIN_DIRECTORY="$ROOT_DIRECTORY/.local/bin"
-export PATH=$BIN_DIRECTORY:$PATH
+ROOT_DIRECTORY="$SCRIPTS_DIRECTORY/.."
+RELEASE_NOTES_TEMPLATE_PATH="$SCRIPTS_DIRECTORY/release-notes.md"
+RELEASE_NOTES_DIRECTORY="$ROOT_DIRECTORY/docs/releases"
+RELEASE_NOTES_PATH="$RELEASE_NOTES_DIRECTORY/index.md"
 
-source "$LOCAL_TOOLS_PATH/python/bin/activate"
+source "$SCRIPTS_DIRECTORY/environment.sh"
 
-export PIPENV_VENV_IN_PROJECT=1
-export PIPENV_IGNORE_VIRTUALENVS=1
+cd "$ROOT_DIRECTORY"
 
-export PATH="$SCRIPTS_DIRECTORY/changes":$PATH
-export PATH="$SCRIPTS_DIRECTORY/build-tools":$PATH
-export PATH="$ROOT_DIRECTORY/macos/dependencies/diligence/scripts":$PATH
+mkdir -p "$RELEASE_NOTES_DIRECTORY"
+changes notes --all --released --template "$RELEASE_NOTES_TEMPLATE_PATH" > "$RELEASE_NOTES_PATH"
