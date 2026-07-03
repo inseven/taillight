@@ -30,7 +30,7 @@ import Sparkle
 class ApplicationModel {
 
     enum SettingsKey: String {
-        case color
+        case lightMode
     }
 
     enum State {
@@ -45,10 +45,10 @@ class ApplicationModel {
                                                          updaterDelegate: nil,
                                                          userDriverDelegate: nil)
 
-    var color: HSBColor {
+    var lightMode: LightMode {
         didSet {
-            try? keyedDefaults.set(codable: color, forKey: .color)
-            let lampColor = color.lampColor
+            try? keyedDefaults.set(codable: lightMode, forKey: .lightMode)
+            let lampColor = lightMode.lampColor
             for client in clients {
                 Task { await client.setColor(lampColor) }
             }
@@ -61,7 +61,7 @@ class ApplicationModel {
 
 
     init() {
-        color = (try? keyedDefaults.codable(forKey: .color)) ?? NamedColor.red.hsbColor
+        lightMode = (try? keyedDefaults.codable(forKey: .lightMode)) ?? .named(.red)
         start()
     }
 
@@ -110,7 +110,7 @@ class ApplicationModel {
                         continue
                     }
                     clients.append(client)
-                    let lampColor = color.lampColor
+                    let lampColor = lightMode.lampColor
                     await client.setColor(lampColor)
                 case .deviceRemoved(let deviceReference):
                     // Reasons Apple sucks #12948:

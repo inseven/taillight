@@ -31,6 +31,17 @@ struct MainMenu: View {
     @Environment(\.openURL) var openURL
     @Environment(\.openWindow) var openWindow
 
+    private var lightMode: Binding<LightMode> {
+        Binding {
+            applicationModel.lightMode
+        } set: { newValue in
+            applicationModel.lightMode = newValue
+            if case .custom = newValue {
+                openWindow(id: ColorPickerWindow.id)
+            }
+        }
+    }
+
     var body: some View {
 
         Divider()
@@ -44,20 +55,18 @@ struct MainMenu: View {
 
         case .authorized:
 
-            @Bindable var applicationModel = applicationModel
             Menu("Color", systemImage: "swatchpalette") {
-                Picker("Color", selection: $applicationModel.color) {
+                Picker("Color", selection: lightMode) {
                     ForEach(NamedColor.allCases) { namedColor in
                         Text(namedColor.name)
-                            .tag(namedColor.hsbColor)
+                            .tag(LightMode.named(namedColor))
                     }
+                    Divider()
+                    Text("Custom...")
+                        .tag(LightMode.custom(applicationModel.lightMode.hsbColor))
                 }
                 .pickerStyle(.inline)
                 .labelsHidden()
-                Divider()
-                Button("Select...") {
-                    openWindow(id: ColorPickerWindow.id)
-                }
             }
 
         case .denied:

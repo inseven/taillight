@@ -18,28 +18,31 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import SwiftUI
+import Foundation
 
-struct ColorPicker: View {
+enum LightMode: Codable, Equatable, Hashable {
+    case named(NamedColor)
+    case custom(HSBColor)
+}
 
-    @Environment(ApplicationModel.self) private var applicationModel
+extension LightMode {
 
-    private struct LayoutMetrics {
-        static let width: CGFloat = 220
-    }
-
-    private var color: Binding<HSBColor> {
-        Binding {
-            applicationModel.lightMode.hsbColor
-        } set: { newValue in
-            applicationModel.lightMode = .custom(newValue)
+    var hsbColor: HSBColor {
+        switch self {
+        case .named(let namedColor):
+            return namedColor.hsbColor
+        case .custom(let hsbColor):
+            return hsbColor
         }
     }
 
-    var body: some View {
-        ColorPlanePicker(color: color)
-            .padding()
-            .frame(width: LayoutMetrics.width)
+    var lampColor: LampColor {
+        switch self {
+        case .named(let namedColor):
+            return namedColor.lampColor
+        case .custom(let hsbColor):
+            return hsbColor.lampColor
+        }
     }
 
 }
