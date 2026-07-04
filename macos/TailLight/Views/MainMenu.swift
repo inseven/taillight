@@ -57,6 +57,9 @@ struct MainMenu: View {
 
             Menu("Color", systemImage: "swatchpalette") {
                 Picker("Color", selection: lightMode) {
+                    Text("Off")
+                        .tag(LightMode.off)
+                    Divider()
                     ForEach(NamedColor.allCases) { namedColor in
                         Text(namedColor.name)
                             .tag(LightMode.named(namedColor))
