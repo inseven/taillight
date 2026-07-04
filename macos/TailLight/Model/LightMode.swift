@@ -21,6 +21,7 @@
 import Foundation
 
 enum LightMode: Codable, Equatable, Hashable {
+    case off
     case named(NamedColor)
     case custom(HSBColor)
     case animation(Animation)
@@ -30,6 +31,8 @@ extension LightMode {
 
     var hsbColor: HSBColor? {
         switch self {
+        case .off:
+            return .black
         case .named(let namedColor):
             return namedColor.hsbColor
         case .custom(let hsbColor):
@@ -41,6 +44,8 @@ extension LightMode {
 
     var lampColor: LampColor? {
         switch self {
+        case .off:
+            return LampColor(red: 0, green: 0, blue: 0, intensity: 0)
         case .named(let namedColor):
             return namedColor.lampColor
         case .custom(let hsbColor):

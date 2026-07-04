@@ -57,6 +57,9 @@ struct MainMenu: View {
 
             Menu("Light", systemImage: "lightbulb") {
                 Picker("Light", selection: lightMode) {
+                    Text("Off")
+                        .tag(LightMode.off)
+                    Divider()
                     ForEach(NamedColor.allCases) { namedColor in
                         Text(namedColor.name)
                             .tag(LightMode.named(namedColor))
