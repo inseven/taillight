@@ -55,8 +55,8 @@ struct MainMenu: View {
 
         case .authorized:
 
-            Menu("Color", systemImage: "swatchpalette") {
-                Picker("Color", selection: lightMode) {
+            Menu("Light", systemImage: "lightbulb") {
+                Picker("Light", selection: lightMode) {
                     ForEach(NamedColor.allCases) { namedColor in
                         Text(namedColor.name)
                             .tag(LightMode.named(namedColor))
