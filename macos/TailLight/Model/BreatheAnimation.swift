@@ -20,35 +20,23 @@
 
 import Foundation
 
-enum Animation: String, Codable, Equatable, Hashable, CaseIterable, Identifiable {
+nonisolated struct BreatheAnimation: ColorAnimationIterator {
 
-    case breathe
-    case rainbow
+    let frameDuration: Duration = .milliseconds(50)
 
-    var id: Self {
-        return self
-    }
+    private let phaseStep: Double = 0.01
+    private var phase: Double = 0
 
-}
-
-extension Animation {
-
-    var name: String {
-        switch self {
-        case .breathe:
-            return "Breathe"
-        case .rainbow:
-            return "Rainbow"
+    mutating func next() -> HSBColor? {
+        defer {
+            phase += phaseStep
+            if phase >= 1.0 {
+                phase -= 1.0
+            }
         }
-    }
-
-    func makeIterator() -> any ColorAnimationIterator {
-        switch self {
-        case .breathe:
-            return BreatheAnimation()
-        case .rainbow:
-            return RainbowAnimation()
-        }
+        let eased = (1 - cos(2 * .pi * phase)) / 2
+        let brightness = pow(eased, 1.8)
+        return HSBColor(hue: 0, saturation: 0, brightness: brightness)
     }
 
 }
