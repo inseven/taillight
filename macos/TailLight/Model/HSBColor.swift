@@ -21,7 +21,7 @@
 import AppKit
 import SwiftUI
 
-struct HSBColor: Codable, Equatable, Hashable {
+nonisolated struct HSBColor: Codable, Equatable, Hashable {
 
     var hue: Double
     var saturation: Double
@@ -49,6 +49,8 @@ struct HSBColor: Codable, Equatable, Hashable {
 }
 
 extension HSBColor {
+
+    static let black = HSBColor(hue: 0, saturation: 0, brightness: 0)
 
     var color: Color {
         return Color(hue: hue, saturation: saturation, brightness: brightness)

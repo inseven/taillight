@@ -48,21 +48,41 @@ class ApplicationModel {
     var lightMode: LightMode {
         didSet {
             try? keyedDefaults.set(codable: lightMode, forKey: .lightMode)
-            let lampColor = lightMode.lampColor
-            for client in clients {
-                Task { await client.setColor(lampColor) }
-            }
+            applyLightMode()
         }
     }
 
     private let manager = HIDDeviceManager();
     private let keyedDefaults = KeyedDefaults<SettingsKey>()
+
     private var clients: [HIDDeviceClient] = []
 
+    @ObservationIgnored private var animator: Animator?
 
     init() {
         lightMode = (try? keyedDefaults.codable(forKey: .lightMode)) ?? .named(.red)
         start()
+        applyLightMode()
+    }
+
+    private func applyLightMode() {
+        switch lightMode {
+        case .animation(let animation):
+            animator = Animator(animation.makeIterator()) { [weak self] color in
+                self?.apply(color.lampColor)
+            }
+        default:
+            animator = nil
+            if let lampColor = lightMode.lampColor {
+                apply(lampColor)
+            }
+        }
+    }
+
+    private func apply(_ lampColor: LampColor) {
+        for client in clients {
+            Task { await client.setColor(lampColor) }
+        }
     }
 
     func requestPermission() {
@@ -110,8 +130,7 @@ class ApplicationModel {
                         continue
                     }
                     clients.append(client)
-                    let lampColor = lightMode.lampColor
-                    await client.setColor(lampColor)
+                    applyLightMode()
                 case .deviceRemoved(let deviceReference):
                     // Reasons Apple sucks #12948:
                     // We get the `HIDDeviceClient` instances we're about to remove and then capture them in a detatched

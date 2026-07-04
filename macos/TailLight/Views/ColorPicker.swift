@@ -30,7 +30,7 @@ struct ColorPicker: View {
 
     private var color: Binding<HSBColor> {
         Binding {
-            applicationModel.lightMode.hsbColor
+            applicationModel.lightMode.hsbColor ?? .black
         } set: { newValue in
             applicationModel.lightMode = .custom(newValue)
         }

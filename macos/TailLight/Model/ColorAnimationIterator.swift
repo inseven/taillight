@@ -20,42 +20,6 @@
 
 import Foundation
 
-enum LightMode: Codable, Equatable, Hashable {
-    case named(NamedColor)
-    case custom(HSBColor)
-    case animation(Animation)
-}
-
-extension LightMode {
-
-    var hsbColor: HSBColor? {
-        switch self {
-        case .named(let namedColor):
-            return namedColor.hsbColor
-        case .custom(let hsbColor):
-            return hsbColor
-        case .animation:
-            return nil
-        }
-    }
-
-    var lampColor: LampColor? {
-        switch self {
-        case .named(let namedColor):
-            return namedColor.lampColor
-        case .custom(let hsbColor):
-            return hsbColor.lampColor
-        case .animation:
-            return nil
-        }
-    }
-
-}
-
-extension LightMode {
-
-    static var animationModes: [(mode: LightMode, name: String)] {
-        return Animation.allCases.map { (mode: .animation($0), name: $0.name) }
-    }
-
+protocol ColorAnimationIterator: IteratorProtocol where Element == HSBColor {
+    var frameDuration: Duration { get }
 }
