@@ -20,47 +20,30 @@
 
 import Foundation
 
-enum LightMode: Codable, Equatable, Hashable {
-    case off
-    case named(NamedColor)
-    case custom(HSBColor)
-    case animation(Animation)
-}
+@MainActor
+final class Animator {
 
-extension LightMode {
+    private let task: Task<Void, Never>
 
-    var hsbColor: HSBColor? {
-        switch self {
-        case .off:
-            return .black
-        case .named(let namedColor):
-            return namedColor.hsbColor
-        case .custom(let hsbColor):
-            return hsbColor
-        case .animation:
-            return nil
+    init(_ animation: any ColorAnimationIterator, apply: @escaping (HSBColor) async -> Void) {
+        task = Task {
+            var iterator = animation
+            while !Task.isCancelled {
+                guard let color = iterator.next() else {
+                    return
+                }
+                await apply(color)
+                do {
+                    try await Task.sleep(for: iterator.frameDuration)
+                } catch {
+                    return
+                }
+            }
         }
     }
 
-    var lampColor: LampColor? {
-        switch self {
-        case .off:
-            return LampColor(red: 0, green: 0, blue: 0, intensity: 0)
-        case .named(let namedColor):
-            return namedColor.lampColor
-        case .custom(let hsbColor):
-            return hsbColor.lampColor
-        case .animation:
-            return nil
-        }
-    }
-
-}
-
-extension LightMode {
-
-    static var animationModes: [(mode: LightMode, name: String)] {
-        return Animation.allCases.map { (mode: .animation($0), name: $0.name) }
+    deinit {
+        task.cancel()
     }
 
 }

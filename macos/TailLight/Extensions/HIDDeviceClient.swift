@@ -46,13 +46,4 @@ extension HIDDeviceClient {
                                lampUpdateFlags: lampUpdateFlags)
     }
 
-    func setColor(_ color: LampColor) async {
-        guard let lampRangeReport = lampRangeReport else {
-            return
-        }
-        let autonomousModeUpdate = await lampRangeReport.update(settingAutonomousMode: false)
-        let colorUpdate = await lampRangeReport.update(settingRed: color.red, green: color.green, blue: color.blue, intensity: color.intensity)
-        _ = await updateElements([autonomousModeUpdate, colorUpdate])
-    }
-
 }

@@ -55,8 +55,8 @@ struct MainMenu: View {
 
         case .authorized:
 
-            Menu("Color", systemImage: "swatchpalette") {
-                Picker("Color", selection: lightMode) {
+            Menu("Light", systemImage: "lightbulb") {
+                Picker("Light", selection: lightMode) {
                     Text("Off")
                         .tag(LightMode.off)
                     Divider()
@@ -64,9 +64,13 @@ struct MainMenu: View {
                         Text(namedColor.name)
                             .tag(LightMode.named(namedColor))
                     }
-                    Divider()
                     Text("Custom...")
-                        .tag(LightMode.custom(applicationModel.lightMode.hsbColor))
+                        .tag(LightMode.custom(applicationModel.lightMode.hsbColor ?? .black))
+                    Divider()
+                    ForEach(LightMode.animationModes, id: \.mode) { animationMode in
+                        Text(animationMode.name)
+                            .tag(animationMode.mode)
+                    }
                 }
                 .pickerStyle(.inline)
                 .labelsHidden()

@@ -18,49 +18,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import Foundation
+import CoreHID
 
-enum LightMode: Codable, Equatable, Hashable {
-    case off
-    case named(NamedColor)
-    case custom(HSBColor)
-    case animation(Animation)
-}
+struct Light {
 
-extension LightMode {
+    let client: HIDDeviceClient
+    let lampRangeReport: LampRangeReport
 
-    var hsbColor: HSBColor? {
-        switch self {
-        case .off:
-            return .black
-        case .named(let namedColor):
-            return namedColor.hsbColor
-        case .custom(let hsbColor):
-            return hsbColor
-        case .animation:
-            return nil
-        }
-    }
-
-    var lampColor: LampColor? {
-        switch self {
-        case .off:
-            return LampColor(red: 0, green: 0, blue: 0, intensity: 0)
-        case .named(let namedColor):
-            return namedColor.lampColor
-        case .custom(let hsbColor):
-            return hsbColor.lampColor
-        case .animation:
-            return nil
-        }
-    }
-
-}
-
-extension LightMode {
-
-    static var animationModes: [(mode: LightMode, name: String)] {
-        return Animation.allCases.map { (mode: .animation($0), name: $0.name) }
+    func setColor(_ lampColor: LampColor) async {
+        let autonomousModeUpdate = lampRangeReport.update(settingAutonomousMode: false)
+        let colorUpdate = lampRangeReport.update(settingRed: lampColor.red,
+                                                 green: lampColor.green,
+                                                 blue: lampColor.blue,
+                                                 intensity: lampColor.intensity)
+        _ = await client.updateElements([autonomousModeUpdate, colorUpdate])
     }
 
 }

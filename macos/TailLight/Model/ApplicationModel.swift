@@ -48,21 +48,41 @@ class ApplicationModel {
     var lightMode: LightMode {
         didSet {
             try? keyedDefaults.set(codable: lightMode, forKey: .lightMode)
-            let lampColor = lightMode.lampColor
-            for client in clients {
-                Task { await client.setColor(lampColor) }
-            }
+            applyLightMode()
         }
     }
 
     private let manager = HIDDeviceManager();
     private let keyedDefaults = KeyedDefaults<SettingsKey>()
-    private var clients: [HIDDeviceClient] = []
 
+    private var lights: [Light] = []
+
+    @ObservationIgnored private var animator: Animator?
 
     init() {
         lightMode = (try? keyedDefaults.codable(forKey: .lightMode)) ?? .named(.red)
         start()
+        applyLightMode()
+    }
+
+    private func applyLightMode() {
+        switch lightMode {
+        case .animation(let animation):
+            animator = Animator(animation.makeIterator()) { [weak self] color in
+                await self?.setColor(color.lampColor)
+            }
+        default:
+            animator = nil
+            if let lampColor = lightMode.lampColor {
+                Task { await setColor(lampColor) }
+            }
+        }
+    }
+
+    private func setColor(_ lampColor: LampColor) async {
+        for light in lights {
+            await light.setColor(lampColor)
+        }
     }
 
     func requestPermission() {
@@ -105,13 +125,12 @@ class ApplicationModel {
                 case .deviceMatched(let deviceReference):
                     guard
                         let client = HIDDeviceClient(deviceReference: deviceReference),
-                        await client.lampRangeReport != nil
+                        let lampRangeReport = await client.lampRangeReport
                     else {
                         continue
                     }
-                    clients.append(client)
-                    let lampColor = lightMode.lampColor
-                    await client.setColor(lampColor)
+                    lights.append(Light(client: client, lampRangeReport: lampRangeReport))
+                    applyLightMode()
                 case .deviceRemoved(let deviceReference):
                     // Reasons Apple sucks #12948:
                     // We get the `HIDDeviceClient` instances we're about to remove and then capture them in a detatched
@@ -127,8 +146,10 @@ class ApplicationModel {
                     // `HIDDeviceClient.deinit`, then I'd expect to see the code lock up on the first disconnection,
                     // whereas we're seeing it do so after a period of time leaving me at somewhat of a loss as to the
                     // true mechanism.
-                    let removedClients = clients.filter { $0.deviceReference == deviceReference }
-                    clients.removeAll { $0.deviceReference == deviceReference }
+                    let removedClients = lights
+                        .filter { $0.client.deviceReference == deviceReference }
+                        .map { $0.client }
+                    lights.removeAll { $0.client.deviceReference == deviceReference }
                     Task.detached { _ = removedClients }
                 default:
                     continue

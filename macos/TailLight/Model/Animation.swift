@@ -20,47 +20,30 @@
 
 import Foundation
 
-enum LightMode: Codable, Equatable, Hashable {
-    case off
-    case named(NamedColor)
-    case custom(HSBColor)
-    case animation(Animation)
-}
+enum Animation: String, Codable, Equatable, Hashable, CaseIterable, Identifiable {
 
-extension LightMode {
+    case rainbow
 
-    var hsbColor: HSBColor? {
-        switch self {
-        case .off:
-            return .black
-        case .named(let namedColor):
-            return namedColor.hsbColor
-        case .custom(let hsbColor):
-            return hsbColor
-        case .animation:
-            return nil
-        }
-    }
-
-    var lampColor: LampColor? {
-        switch self {
-        case .off:
-            return LampColor(red: 0, green: 0, blue: 0, intensity: 0)
-        case .named(let namedColor):
-            return namedColor.lampColor
-        case .custom(let hsbColor):
-            return hsbColor.lampColor
-        case .animation:
-            return nil
-        }
+    var id: Self {
+        return self
     }
 
 }
 
-extension LightMode {
+extension Animation {
 
-    static var animationModes: [(mode: LightMode, name: String)] {
-        return Animation.allCases.map { (mode: .animation($0), name: $0.name) }
+    var name: String {
+        switch self {
+        case .rainbow:
+            return "Rainbow"
+        }
+    }
+
+    func makeIterator() -> any ColorAnimationIterator {
+        switch self {
+        case .rainbow:
+            return RainbowAnimation()
+        }
     }
 
 }

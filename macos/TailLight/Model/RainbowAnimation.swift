@@ -20,47 +20,21 @@
 
 import Foundation
 
-enum LightMode: Codable, Equatable, Hashable {
-    case off
-    case named(NamedColor)
-    case custom(HSBColor)
-    case animation(Animation)
-}
+nonisolated struct RainbowAnimation: ColorAnimationIterator {
 
-extension LightMode {
+    let frameDuration: Duration = .milliseconds(40)
 
-    var hsbColor: HSBColor? {
-        switch self {
-        case .off:
-            return .black
-        case .named(let namedColor):
-            return namedColor.hsbColor
-        case .custom(let hsbColor):
-            return hsbColor
-        case .animation:
-            return nil
+    private var hue: Double = 0
+    private let hueStep: Double = 0.005
+
+    mutating func next() -> HSBColor? {
+        defer {
+            hue += hueStep
+            if hue >= 1.0 {
+                hue -= 1.0
+            }
         }
-    }
-
-    var lampColor: LampColor? {
-        switch self {
-        case .off:
-            return LampColor(red: 0, green: 0, blue: 0, intensity: 0)
-        case .named(let namedColor):
-            return namedColor.lampColor
-        case .custom(let hsbColor):
-            return hsbColor.lampColor
-        case .animation:
-            return nil
-        }
-    }
-
-}
-
-extension LightMode {
-
-    static var animationModes: [(mode: LightMode, name: String)] {
-        return Animation.allCases.map { (mode: .animation($0), name: $0.name) }
+        return HSBColor(hue: hue, saturation: 1, brightness: 1)
     }
 
 }
