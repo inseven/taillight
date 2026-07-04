@@ -18,32 +18,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import Foundation
+import CoreHID
 
-@MainActor
-final class Animator {
+struct Light {
 
-    private let task: Task<Void, Never>
+    let client: HIDDeviceClient
+    let lampRangeReport: LampRangeReport
 
-    init(_ animation: any ColorAnimationIterator, apply: @escaping (HSBColor) async -> Void) {
-        task = Task {
-            var iterator = animation
-            while !Task.isCancelled {
-                guard let color = iterator.next() else {
-                    return
-                }
-                await apply(color)
-                do {
-                    try await Task.sleep(for: iterator.frameDuration)
-                } catch {
-                    return
-                }
-            }
-        }
-    }
-
-    deinit {
-        task.cancel()
+    func setColor(_ lampColor: LampColor) async {
+        let autonomousModeUpdate = lampRangeReport.update(settingAutonomousMode: false)
+        let colorUpdate = lampRangeReport.update(settingRed: lampColor.red,
+                                                 green: lampColor.green,
+                                                 blue: lampColor.blue,
+                                                 intensity: lampColor.intensity)
+        _ = await client.updateElements([autonomousModeUpdate, colorUpdate])
     }
 
 }
