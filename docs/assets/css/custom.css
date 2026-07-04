@@ -68,3 +68,18 @@
         filter: hue-rotate(360deg);
     }
 }
+
+.preview-video {
+    margin-top: calc(2 * var(--vertical-spacing));
+    height: 320px;
+    overflow: hidden;
+}
+
+.preview-video video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    dynamic-range-limit: standard;
+}

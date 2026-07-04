@@ -1,0 +1,2 @@
+*.[Mm]4[Vv] filter=lfs diff=lfs merge=lfs -text
+*.[Mm][Pp]4 filter=lfs diff=lfs merge=lfs -text
