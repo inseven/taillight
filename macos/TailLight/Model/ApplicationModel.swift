@@ -125,11 +125,11 @@ class ApplicationModel {
                 case .deviceMatched(let deviceReference):
                     guard
                         let client = HIDDeviceClient(deviceReference: deviceReference),
-                        let lampRangeReport = await client.lampRangeReport
+                        let light = await Light(client: client)
                     else {
                         continue
                     }
-                    lights.append(Light(client: client, lampRangeReport: lampRangeReport))
+                    lights.append(light)
                     applyLightMode()
                 case .deviceRemoved(let deviceReference):
                     // Reasons Apple sucks #12948:
