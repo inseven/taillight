@@ -3,12 +3,7 @@ layout: default
 ---
 
 {% include icon-header.html %}
-
-<div class="showcase">
-    <div class="content">
-        {% include picture.html light="/images/screenshot-default@2x.png" dark="/images/screenshot-default-dark@2x.png" %}
-    </div>
-</div>
+{% include showcase.html %}
 
 <div class="content">
     <ul class="features">
