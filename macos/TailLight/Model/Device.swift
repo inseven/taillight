@@ -20,7 +20,7 @@
 
 import CoreHID
 
-struct Light {
+struct Device {
 
     let client: HIDDeviceClient
 

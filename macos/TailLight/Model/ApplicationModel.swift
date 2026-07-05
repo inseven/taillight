@@ -55,7 +55,7 @@ class ApplicationModel {
     private let manager = HIDDeviceManager();
     private let keyedDefaults = KeyedDefaults<SettingsKey>()
 
-    private var lights: [Light] = []
+    private var devices: [Device] = []
 
     @ObservationIgnored private var animator: Animator?
 
@@ -80,7 +80,7 @@ class ApplicationModel {
     }
 
     private func setColor(_ lampColor: LampColor) async {
-        for light in lights {
+        for light in devices {
             await light.setColor(lampColor)
         }
     }
@@ -125,11 +125,11 @@ class ApplicationModel {
                 case .deviceMatched(let deviceReference):
                     guard
                         let client = HIDDeviceClient(deviceReference: deviceReference),
-                        let light = await Light(client: client)
+                        let device = await Device(client: client)
                     else {
                         continue
                     }
-                    lights.append(light)
+                    devices.append(device)
                     applyLightMode()
                 case .deviceRemoved(let deviceReference):
                     // Reasons Apple sucks #12948:
@@ -146,10 +146,10 @@ class ApplicationModel {
                     // `HIDDeviceClient.deinit`, then I'd expect to see the code lock up on the first disconnection,
                     // whereas we're seeing it do so after a period of time leaving me at somewhat of a loss as to the
                     // true mechanism.
-                    let removedClients = lights
+                    let removedClients = devices
                         .filter { $0.client.deviceReference == deviceReference }
                         .map { $0.client }
-                    lights.removeAll { $0.client.deviceReference == deviceReference }
+                    devices.removeAll { $0.client.deviceReference == deviceReference }
                     Task.detached { _ = removedClients }
                 default:
                     continue
