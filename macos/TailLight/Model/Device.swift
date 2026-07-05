@@ -33,7 +33,15 @@ struct Device {
     private let intensityUpdateChannel: HIDElement
     private let lampUpdateFlags: HIDElement
 
-    init?(client: HIDDeviceClient) async {
+    var deviceReference: HIDDeviceClient.DeviceReference {
+        return client.deviceReference
+    }
+
+    init?(deviceReference: HIDDeviceClient.DeviceReference) async {
+
+        guard let client = HIDDeviceClient(deviceReference: deviceReference) else {
+            return nil
+        }
 
         // Look through the elements and pull out the collection of update elements corresponding with the first lamp
         // range report. The lamp range report is identified by the presnece of a lamp id start element.

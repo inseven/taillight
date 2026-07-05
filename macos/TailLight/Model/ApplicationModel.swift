@@ -123,10 +123,7 @@ class ApplicationModel {
             for try await notification in await manager.monitorNotifications(matchingCriteria: [matchingCriteria]) {
                 switch notification {
                 case .deviceMatched(let deviceReference):
-                    guard
-                        let client = HIDDeviceClient(deviceReference: deviceReference),
-                        let device = await Device(client: client)
-                    else {
+                    guard let device = await Device(deviceReference: deviceReference) else {
                         continue
                     }
                     devices.append(device)
@@ -146,11 +143,10 @@ class ApplicationModel {
                     // `HIDDeviceClient.deinit`, then I'd expect to see the code lock up on the first disconnection,
                     // whereas we're seeing it do so after a period of time leaving me at somewhat of a loss as to the
                     // true mechanism.
-                    let removedClients = devices
-                        .filter { $0.client.deviceReference == deviceReference }
-                        .map { $0.client }
-                    devices.removeAll { $0.client.deviceReference == deviceReference }
-                    Task.detached { _ = removedClients }
+                    let removedDevices = devices
+                        .filter { $0.deviceReference == deviceReference }
+                    devices.removeAll { $0.deviceReference == deviceReference }
+                    Task.detached { _ = removedDevices }
                 default:
                     continue
                 }
