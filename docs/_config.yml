@@ -3,6 +3,7 @@ title: TailLight
 author: Jason Morley
 email: support@jbmorley.co.uk
 description: Set the light on your Microsoft Pro IntelliMouse
+image: images/screenshot-default-social@2x.png
 baseurl: ""
 url: "https://taillight.jbmorley.co.uk"
 repository: https://github.com/inseven/taillight

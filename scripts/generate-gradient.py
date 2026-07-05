@@ -45,15 +45,16 @@ VARIANTS = {
 }
 
 
-def generate(size, value, saturation_min, saturation_max):
-    center = (size - 1) / 2
-    max_radius = math.hypot(center, center)
+def generate(width, height, value, saturation_min, saturation_max):
+    center_x = (width - 1) / 2
+    center_y = (height - 1) / 2
+    max_radius = math.hypot(center_x, center_y)
     rows = []
-    for j in range(size):
-        dy = j - center
+    for j in range(height):
+        dy = j - center_y
         row = bytearray()
-        for i in range(size):
-            dx = i - center
+        for i in range(width):
+            dx = i - center_x
             radius = min(math.hypot(dx, dy) / max_radius, 1.0)
             hue = (math.atan2(dy, dx) / (2 * math.pi)) % 1.0
             saturation = saturation_min + (saturation_max - saturation_min) * radius
@@ -63,14 +64,14 @@ def generate(size, value, saturation_min, saturation_max):
     return rows
 
 
-def write_png(path, size, rows):
+def write_png(path, width, height, rows):
 
     def chunk(tag, data):
         return (struct.pack(">I", len(data)) + tag + data +
                 struct.pack(">I", zlib.crc32(tag + data) & 0xffffffff))
 
     signature = b"\x89PNG\r\n\x1a\n"
-    ihdr = struct.pack(">IIBBBBB", size, size, 8, 2, 0, 0, 0)
+    ihdr = struct.pack(">IIBBBBB", width, height, 8, 2, 0, 0, 0)
     raw = bytearray()
     for row in rows:
         raw += b"\x00" + row
@@ -84,19 +85,27 @@ def write_png(path, size, rows):
 
 def main():
     parser = argparse.ArgumentParser(description="Generate the TailLight icon background gradient.")
-    parser.add_argument("--size", type=int, default=1024)
+    parser.add_argument("--width", type=int, required=True)
+    parser.add_argument("--height", type=int, required=True)
     parser.add_argument("--variant", choices=sorted(VARIANTS.keys()), action="append", dest="variants")
     parser.add_argument("--output-directory", default=GRAPHICS_DIRECTORY)
+    parser.add_argument("--output", help="exact output path; only valid with a single --variant")
     options = parser.parse_args()
 
     variants = options.variants or sorted(VARIANTS.keys())
+    if options.output and len(variants) != 1:
+        parser.error("--output can only be used with a single --variant")
+
     os.makedirs(options.output_directory, exist_ok=True)
     for variant in variants:
         settings = VARIANTS[variant]
-        rows = generate(options.size, **settings)
-        suffix = "" if variant == "light" else f"-{variant}"
-        path = os.path.join(options.output_directory, f"icon-background{suffix}.png")
-        write_png(path, options.size, rows)
+        rows = generate(options.width, options.height, **settings)
+        if options.output:
+            path = options.output
+        else:
+            suffix = "" if variant == "light" else f"-{variant}"
+            path = os.path.join(options.output_directory, f"icon-background{suffix}.png")
+        write_png(path, options.width, options.height, rows)
         print(f"wrote {path}")
 
 
