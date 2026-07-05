@@ -33,9 +33,10 @@ struct Light {
     private let intensityUpdateChannel: HIDElement
     private let lampUpdateFlags: HIDElement
 
-    // Look through the elements and pull out the collection of update elements corresponding with the first lamp
-    // range report. The lamp range report is identified by the presnece of a lamp id start element.
     init?(client: HIDDeviceClient) async {
+
+        // Look through the elements and pull out the collection of update elements corresponding with the first lamp
+        // range report. The lamp range report is identified by the presnece of a lamp id start element.
         let elements = await client.elements
         guard let autonomousMode = elements.first(where: { $0.usage == .lightingAndIllumination(.autonomousMode) }),
               let lampIdStart = elements.first(where: { $0.usage == .lightingAndIllumination(.lampIdStart) }),
@@ -48,6 +49,7 @@ struct Light {
         else {
             return nil
         }
+
         self.client = client
         self.autonomousMode = autonomousMode
         self.lampIdStart = lampIdStart
