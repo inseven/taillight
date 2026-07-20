@@ -17,7 +17,9 @@ navigation:
   - title: GitHub
     href: https://github.com/inseven/taillight
   - title: Donate
-    href: https://jbmorley.co.uk/support/
+    href: https://jbmorley.co.uk/donate/
+  - title: More
+    href: https://jbmorley.co.uk/software/
 
 footer:
   - title: Privacy Policy
@@ -26,14 +28,7 @@ footer:
     href: /support
   - title: License
     href: /license
-  - title: More Software
-    href: https://jbmorley.co.uk/donate/
 
-plugins:
-  - jekyll-feed
-  - jekyll-environment-variables
-  - jekyll-toc
-  - jekyll-image-size
 destination: ../_site
 
 defaults:
