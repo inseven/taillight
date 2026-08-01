@@ -154,6 +154,7 @@ build-tools notarize "$BUILD_DIRECTORY/TailLight.app" \
     --key "$API_KEY_PATH" \
     --key-id "$APPLE_API_KEY_ID" \
     --issuer "$APPLE_API_KEY_ISSUER_ID"
+    --log-directory "$BUILD_DIRECTORY"
 
 # Compress the app.
 RELEASE_BASENAME="TailLight-$VERSION_NUMBER-$BUILD_NUMBER"
