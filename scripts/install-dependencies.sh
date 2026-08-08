@@ -34,4 +34,5 @@ mise install uv
 mise install
 
 cd "$WEBSITE_DIRECTORY"
+gem install bundler
 bundle install
