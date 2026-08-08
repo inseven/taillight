@@ -29,7 +29,7 @@ ROOT_DIRECTORY="$( cd "$( dirname "$( dirname "${BASH_SOURCE[0]}" )" )" &> /dev/
 
 LOCAL_TOOLS_PATH="$ROOT_DIRECTORY/.local"
 
-# Clean up and recreate the local tools directory; `build-website.sh` installs Ruby gems here.
+# Clean up and recreate the local tools directory.
 if [ -d "$LOCAL_TOOLS_PATH" ] ; then
     rm -r "$LOCAL_TOOLS_PATH"
 fi
