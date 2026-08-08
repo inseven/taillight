@@ -51,6 +51,10 @@ done
 # Update the release notes.
 "$SCRIPTS_DIRECTORY/update-release-notes.sh"
 
+# Install the Jekyll dependencies.
+cd "$WEBSITE_DIRECTORY"
+bundle install
+
 # Get the latest release URL.
 if ! DOWNLOAD_URL=$(build-tools latest-github-release inseven taillight "TailLight-*.zip"); then
     echo >&2 failed
