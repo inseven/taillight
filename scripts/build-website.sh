@@ -51,14 +51,6 @@ done
 # Update the release notes.
 "$SCRIPTS_DIRECTORY/update-release-notes.sh"
 
-# Install the Jekyll dependencies.
-export GEM_HOME="$ROOT_DIRECTORY/.local/ruby"
-mkdir -p "$GEM_HOME"
-export PATH="$GEM_HOME/bin":$PATH
-gem install bundler
-cd "$WEBSITE_DIRECTORY"
-bundle install
-
 # Get the latest release URL.
 if ! DOWNLOAD_URL=$(build-tools latest-github-release inseven taillight "TailLight-*.zip"); then
     echo >&2 failed

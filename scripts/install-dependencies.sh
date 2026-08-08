@@ -27,16 +27,11 @@ set -u
 
 ROOT_DIRECTORY="$( cd "$( dirname "$( dirname "${BASH_SOURCE[0]}" )" )" &> /dev/null && pwd )"
 
-LOCAL_TOOLS_PATH="$ROOT_DIRECTORY/.local"
+WEBSITE_DIRECTORY="$ROOT_DIRECTORY/docs"
 
-# Clean up and recreate the local tools directory.
-if [ -d "$LOCAL_TOOLS_PATH" ] ; then
-    rm -r "$LOCAL_TOOLS_PATH"
-fi
-mkdir -p "$LOCAL_TOOLS_PATH"
-
-# Install the tools defined in `.tool-versions`. uv is installed first because the mise pipx backend
-# uses it to install the Python command-line tools and must be able to find it on the path.
 cd "$ROOT_DIRECTORY"
 mise install uv
 mise install
+
+cd "$WEBSITE_DIRECTORY"
+bundle install
