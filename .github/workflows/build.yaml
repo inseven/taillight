@@ -30,9 +30,14 @@ jobs:
         submodules: recursive
         fetch-depth: 0
 
+    - name: Get the latest mise version
+      id: mise
+      run: echo "version=$(curl -fsSL https://mise.jdx.dev/VERSION)" >> "$GITHUB_OUTPUT"
+
     - name: Install mise
       uses: jdx/mise-action@v4
       with:
+        version: ${{ steps.mise.outputs.version }}
         install: false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -82,9 +87,14 @@ jobs:
       run: |
         git submodule update --init --depth 1 docs/_theme
 
+    - name: Get the latest mise version
+      id: mise
+      run: echo "version=$(curl -fsSL https://mise.jdx.dev/VERSION)" >> "$GITHUB_OUTPUT"
+
     - name: Install mise
       uses: jdx/mise-action@v4
       with:
+        version: ${{ steps.mise.outputs.version }}
         install: false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
