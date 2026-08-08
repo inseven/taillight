@@ -30,6 +30,7 @@ jobs:
         submodules: recursive
         fetch-depth: 0
 
+    # Ensure we're using the latest version of mise in an attempt to catch upstream errors early.
     - name: Get the latest mise version
       id: mise
       run: echo "version=$(curl -fsSL https://mise.jdx.dev/VERSION)" >> "$GITHUB_OUTPUT"
@@ -83,6 +84,7 @@ jobs:
       run: |
         git submodule update --init --depth 1 docs/_theme
 
+    # Ensure we're using the latest version of mise in an attempt to catch upstream errors early.
     - name: Get the latest mise version
       id: mise
       run: echo "version=$(curl -fsSL https://mise.jdx.dev/VERSION)" >> "$GITHUB_OUTPUT"
