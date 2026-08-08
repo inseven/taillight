@@ -26,23 +26,17 @@ set -x
 set -u
 
 ROOT_DIRECTORY="$( cd "$( dirname "$( dirname "${BASH_SOURCE[0]}" )" )" &> /dev/null && pwd )"
-SCRIPTS_DIRECTORY="$ROOT_DIRECTORY/scripts"
 
 LOCAL_TOOLS_PATH="$ROOT_DIRECTORY/.local"
 
-# Install tools defined in `.tool-versions`.
-cd "$ROOT_DIRECTORY"
-mise install
-
-# Clean up and recreate the local tools directory.
+# Clean up and recreate the local tools directory; `build-website.sh` installs Ruby gems here.
 if [ -d "$LOCAL_TOOLS_PATH" ] ; then
     rm -r "$LOCAL_TOOLS_PATH"
 fi
 mkdir -p "$LOCAL_TOOLS_PATH"
 
-# Source `environment.sh` to ensure the remainder of our paths are set up correctly.
-source "$SCRIPTS_DIRECTORY/environment.sh"
-
-# Install the Python dependencies (uses PIPENV_PIPFILE from environment.sh).
-pip install --user --ignore-installed --upgrade pip pipenv wheel certifi
-pipenv install
+# Install the tools defined in `.tool-versions`. uv is installed first because the mise pipx backend
+# uses it to install the Python command-line tools and must be able to find it on the path.
+cd "$ROOT_DIRECTORY"
+mise install uv
+mise install
