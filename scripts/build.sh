@@ -32,7 +32,6 @@ SOURCE_DIRECTORY="$ROOT_DIRECTORY/macos"
 BUILD_DIRECTORY="$ROOT_DIRECTORY/build"
 ARCHIVES_DIRECTORY="$ROOT_DIRECTORY/archives"
 TEMPORARY_DIRECTORY="$ROOT_DIRECTORY/temp"
-SPARKLE_DIRECTORY="$SCRIPTS_DIRECTORY/Sparkle"
 
 KEYCHAIN_PATH="$TEMPORARY_DIRECTORY/temporary.keychain"
 ARCHIVE_PATH="$BUILD_DIRECTORY/TailLight.xcarchive"
@@ -163,11 +162,6 @@ zip --symlinks -r "$RELEASE_ZIP_BASENAME" "TailLight.app"
 rm -r "TailLight.app"
 popd
 
-# Build Sparkle.
-cd "$SPARKLE_DIRECTORY"
-xcodebuild -project Sparkle.xcodeproj -scheme generate_appcast SYMROOT=`pwd`/.build
-GENERATE_APPCAST=`pwd`/.build/Debug/generate_appcast
-
 SPARKLE_PRIVATE_KEY_FILE="$TEMPORARY_DIRECTORY/private-key-file"
 echo -n "$SPARKLE_PRIVATE_KEY_BASE64" | base64 --decode -o "$SPARKLE_PRIVATE_KEY_FILE"
 
@@ -175,7 +169,7 @@ echo -n "$SPARKLE_PRIVATE_KEY_BASE64" | base64 --decode -o "$SPARKLE_PRIVATE_KEY
 cd "$ROOT_DIRECTORY"
 cp "$RELEASE_ZIP_PATH" "$ARCHIVES_DIRECTORY"
 changes notes --all --template "$RELEASE_NOTES_TEMPLATE_PATH" >> "$ARCHIVES_DIRECTORY/$RELEASE_BASENAME.html"
-"$GENERATE_APPCAST" --ed-key-file "$SPARKLE_PRIVATE_KEY_FILE" "$ARCHIVES_DIRECTORY"
+generate_appcast --ed-key-file "$SPARKLE_PRIVATE_KEY_FILE" "$ARCHIVES_DIRECTORY"
 APPCAST_PATH="$ARCHIVES_DIRECTORY/appcast.xml"
 cp "$APPCAST_PATH" "$BUILD_DIRECTORY"
 
